@@ -4,6 +4,7 @@
 #include <string>
 #include "json.hpp"
 #include "PID.h"
+#include <fstream>
 
 // for convenience
 using nlohmann::json;
@@ -35,11 +36,19 @@ int main() {
 
   PID pid;
   /**
-   * Initialize the pid variable.
+   * Initialize the pid variable..
+   * Use a file object to read in gains, removing the need to recompile just to test different gains.
    */
-  double Kp = 1.0;
-  double Ki = 0;
-  double Kd = 0;
+
+  std::ifstream f("gains.txt");
+  double Kp;
+  double Ki;
+  double Kd;
+  f >> Kp;
+  f >> Ki;
+  f >> Kd;
+  f.close();
+
   pid.Init(Kp, Ki, Kd);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
