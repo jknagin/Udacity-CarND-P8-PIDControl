@@ -31,6 +31,12 @@ class PID {
    */
   double TotalError();
 
+  /**
+   * Calculate the steering angle.
+   * @output The steering angle
+   */
+  double CalculateSteering();
+
  private:
   /**
    * PID Errors

@@ -21,19 +21,22 @@ void PID::UpdateError(double cte) {
   /**
    * Update PID errors based on cte.
    */
-  d_error = Kd*(cte - p_error/Kp);
+  d_error = Kd*(cte - p_error/Kp);  // p_error/Kp is the previous cte
   p_error = Kp*cte;
-  
-  double integralErrorThreshold = 999;
-  if (std::abs(cte) <= integralErrorThreshold)
-  {
-    i_error += Ki*cte;
-  }
+  i_error += Ki*cte;
 }
 
 double PID::TotalError() {
   /**
    * Calculate and return the total error
    */
-   return Kp*p_error + Ki*i_error + Kd*d_error;
+   return p_error + i_error + d_error;
+}
+
+double PID::CalculateSteering()
+{
+  /**
+   * Return steering value
+   */
+  return -TotalError();
 }
